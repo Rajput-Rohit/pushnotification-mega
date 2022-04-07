@@ -118,6 +118,7 @@ class _HomePageState extends State {
           dataBody: message.data['body'],
         );
 
+
         setState(() {
           _notificationInfo = notification;
           _totalNotifications++;
