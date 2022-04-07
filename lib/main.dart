@@ -67,7 +67,7 @@ class _HomePageState extends State {
   void checkForInitialMessage() async {
     await Firebase.initializeApp();
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
       PushNotification notification = PushNotification(
@@ -79,6 +79,10 @@ class _HomePageState extends State {
         _totalNotifications++;
       });
     }
+    FirebaseMessaging.instance.getToken().then((value) {
+      String? token = value;
+      print(token);
+    });
   }
 
   void registerNotification() async {
@@ -107,8 +111,9 @@ class _HomePageState extends State {
             leading: NotificationBadge(totalNotifications: _totalNotifications),
             subtitle: Text(_notificationInfo!.body!),
             background: Colors.cyan.shade700,
-            duration: Duration(seconds: 2),
+            //duration: Duration(seconds: 2),
           );
+
         }
         // Parse the message received
         PushNotification notification = PushNotification(
@@ -117,7 +122,6 @@ class _HomePageState extends State {
           dataTitle: message.data['title'],
           dataBody: message.data['body'],
         );
-
 
         setState(() {
           _notificationInfo = notification;
@@ -153,25 +157,25 @@ class _HomePageState extends State {
           // TODO: add the notification text here
           _notificationInfo != null
               ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),
-              ),
-            ],
-          )
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                )
               : Container(),
         ],
       ),
